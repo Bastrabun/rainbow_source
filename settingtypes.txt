@@ -4,3 +4,8 @@ rainbow_source.bucket_crafts (Colored water bucket crafting) bool false
 
 
 rainbow_source.liquid_renewable (new source can be created by >= 2 adjacent sources) bool false
+
+-- Enable buckets
+-- Set this to true if you want to enable buckets, set this to false to disable them
+-- Optional, default true
+rainbow_source.enable_buckets (Enable buckets) bool true
