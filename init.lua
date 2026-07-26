@@ -17,6 +17,10 @@ local source_list = {
 
 --renewable liquid setting value for Your Land thanks to tour_ist
 local liquid_renewable = core.settings:get_bool("rainbow_source.liquid_renewable", false)
+-- Enable buckets
+-- Set this to true if you want to enable buckets, set this to false to disable them
+-- Optional, default true
+local enable_buckets = core.settings:get_bool(rainbow_source.enable_buckets, true)
 
 for i in ipairs(source_list) do
 	local name = source_list[i][1]
@@ -125,40 +129,42 @@ for i in ipairs(source_list) do
 	--[[-------------------------------------
 	--Buckets (new feature by DustyDave961)--
 	---------------------------------------]]
-
-	--Register buckets with fluid_lib function
-	if core.get_modpath("bucket_compat") then
-		fluid_lib.register_liquid(
-			"rainbow_source:"..name.."_water_source",
-			"rainbow_source:"..name.."_water_flowing",
-			"rainbow_source:bucket_"..name.."_water",
-			"#"..colour,
-			description.." Water Bucket",
-			{tool = 1, water_bucket = 1}
-		)
+	if enable_buckets == true then
 	
-	--Add buckets even without bucket_compat
-	elseif core.get_modpath("bucket") then
-		bucket.register_liquid(
-			"rainbow_source:"..name.."_water_source",
-			"rainbow_source:"..name.."_water_flowing",
-			"rainbow_source:bucket_"..name.."_water",
-			"rs_bucket.png^(bucket_mask.png^[colorize:#"..colour..":70)",
-			description.." Water Bucket",
-			{tool = 1, water_bucket = 1}
-		)
-	end
-			
-	--Register crafting recipes if dye is present and crafting setting is enabled
-	if core.get_modpath("dye") and core.settings:get_bool("rainbow_source.bucket_crafts") then
-		if core.get_modpath("bucket") or core.get_modpath("bucket_compat") then
-			core.register_craft({
-				output = "rainbow_source:bucket_"..name.."_water",
-				recipe = {
-						{"dye:"..dye},
-						{"group:water_bucket"}
-					}
-			})
+		--Register buckets with fluid_lib function
+		if core.get_modpath("bucket_compat") then
+			fluid_lib.register_liquid(
+				"rainbow_source:"..name.."_water_source",
+				"rainbow_source:"..name.."_water_flowing",
+				"rainbow_source:bucket_"..name.."_water",
+				"#"..colour,
+				description.." Water Bucket",
+				{tool = 1, water_bucket = 1}
+			)
+		
+		--Add buckets even without bucket_compat
+		elseif core.get_modpath("bucket") then
+			bucket.register_liquid(
+				"rainbow_source:"..name.."_water_source",
+				"rainbow_source:"..name.."_water_flowing",
+				"rainbow_source:bucket_"..name.."_water",
+				"rs_bucket.png^(bucket_mask.png^[colorize:#"..colour..":70)",
+				description.." Water Bucket",
+				{tool = 1, water_bucket = 1}
+			)
+		end
+				
+		--Register crafting recipes if dye is present and crafting setting is enabled
+		if core.get_modpath("dye") and core.settings:get_bool("rainbow_source.bucket_crafts") then
+			if core.get_modpath("bucket") or core.get_modpath("bucket_compat") then
+				core.register_craft({
+					output = "rainbow_source:bucket_"..name.."_water",
+					recipe = {
+							{"dye:"..dye},
+							{"group:water_bucket"}
+						}
+				})
+			end
 		end
 	end
 end
